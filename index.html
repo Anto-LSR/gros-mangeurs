@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Gros Mangeurs</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: none; overflow: hidden; background: #fdf6ec; font-family: "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif; touch-action: none; }
+  canvas { display: block; }
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow-y: auto; touch-action: pan-y; gap: 16px; padding: 16px; background: rgba(253, 246, 236, .94); text-align: center; z-index: 10; }
+  .screen > :first-child { margin-top: auto; }
+  .screen > :last-child { margin-bottom: auto; }
+  .hidden { display: none; }
+  h1 { font-size: clamp(32px, 8vw, 64px); color: #e84a5f; text-shadow: 3px 3px 0 #2a363b; transform: rotate(-3deg); }
+  p { font-size: 18px; color: #2a363b; max-width: 520px; }
+  .faces { display: grid; grid-template-columns: repeat(auto-fill, 80px); gap: 12px 10px; justify-content: center; max-width: 520px; width: 100%; }
+  .faces figure { cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .faces img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 4px solid #2a363b; transition: transform .15s; }
+  .faces figure:hover img { transform: scale(1.15) rotate(8deg); border-color: #e84a5f; }
+  .faces figcaption { font-size: 13px; color: #2a363b; line-height: 1.1; max-width: 80px; overflow-wrap: anywhere; }
+  button { font: inherit; font-size: 22px; padding: 12px 28px; border: 4px solid #2a363b; border-radius: 999px; background: #ffd166; color: #2a363b; cursor: pointer; box-shadow: 4px 4px 0 #2a363b; }
+  button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #2a363b; }
+  #deadFace { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 6px solid #e84a5f; animation: spin 2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #hud { position: fixed; top: 10px; left: 10px; font-size: 20px; color: #2a363b; pointer-events: none; z-index: 5; }
+  #board { position: fixed; top: 10px; right: 10px; font-size: 14px; color: #2a363b; background: rgba(255,255,255,.7); padding: 8px 12px; border-radius: 12px; pointer-events: none; z-index: 5; min-width: 150px; }
+  #board b { color: #e84a5f; }
+  @media (max-width: 600px) {
+    #hud { font-size: 16px; }
+    #board { font-size: 11px; padding: 6px 8px; min-width: 0; }
+    .faces { grid-template-columns: repeat(4, 72px); }
+    .faces img { width: 64px; height: 64px; }
+    p { font-size: 16px; }
+  }
+  .mobile-only { display: none; }
+  @media (pointer: coarse) { .mobile-only { display: block; } .desktop-only { display: none; } }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"></div>
+<div id="board"></div>
+
+<div id="start" class="screen">
+  <h1>GROS MANGEURS</h1>
+  <p>Choisis ta tête. Mange les plus petits (contour vert). Fuis les plus gros (contour rouge). Deviens énorme.</p>
+  <p class="desktop-only">🖱️ Ta tête suit la souris.</p>
+  <p class="mobile-only">👆 Pose le doigt n'importe où et glisse pour diriger.</p>
+  <div class="faces" id="picker"></div>
+</div>
+
+<div id="over" class="screen hidden">
+  <h1 id="overTitle">MIAM.</h1>
+  <img id="deadFace" alt="">
+  <p id="overText"></p>
+  <button id="again">Rejouer</button>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
